@@ -21,9 +21,11 @@ Use the sidebar to filter or toggle visualizations.
 """)
 
 st.sidebar.header("Options")
-show_histogram = st.sidebar.checkbox("Histogram: Model Year by Paint Color and Fuel", value=True)
-show_scatter = st.sidebar.checkbox("Scatter Plot: Show Price vs. Odometer Scatter Plot", value=True)
-show_bar = st.sidebar.checkbox("Bar Graph: Vehicle Manufacturer vs. Odometer", value=True)
+show_histogram = st.sidebar.checkbox("Model Year by Paint Color and Fuel", value=True)
+show_scatter = st.sidebar.checkbox("Show Price vs. Odometer Scatter Plot", value=True)
+show_hist2 = st.sidebar.checkbox("Vehicle Manufacturer vs. Odometer", value=True)
+show_scatter2 = st.sidebar.checkbox("Vehicle model year vs price", value=True)
+
 
 if show_histogram:
     st.subheader("Histogram: Model Year by Paint Color and Fuel")
@@ -50,23 +52,36 @@ if show_scatter:
 
 st.markdown("Adjust the options on the sidebar to explore the data further.")
 
-if show_bar:
-    st.header('Vehicle Manufacturer vs. Odometer')
-    st.write('The relationship between vehicle manufacturer and odometer is shown below.')
-    
 
-    bar_df = vehicle_df.copy()
-    bar_df['manufacturer'] = bar_df['model'].str[:3]
-    
-    bar_fig = px.bar(
-        bar_df, 
-        x='manufacturer', 
-        y='odometer', 
-        color='odometer', 
-        title='Vehicle Manufacturer vs. Odometer'
+lower_bound = vehicle_df['price'].quantile(0.01)
+upper_bound = vehicle_df['price'].quantile(0.99)
+clean_df = vehicle_df[
+    (vehicle_df['price'] >= lower_bound) &
+    (vehicle_df['price'] <= upper_bound)
+]
+
+if show_hist2:
+    st.subheader("Price Distribution")
+    hist2_fig = px.histogram(
+        clean_df,
+        x="price",
+        color="price",
+        title="Price Distribution"
     )
-    bar_fig.update_layout(
-        yaxis=dict(range=[0, 300000]),
-        plot_bgcolor='white'
+    st.plotly_chart(hist2_fig)
+
+if show_scatter2:
+    st.subheader("Vehicle model year vs price")
+    scatter2_fig = px.scatter(
+        vehicle_df,
+        x="model",
+        y="price",
+        color="manufacturer",
+        title="Vehicle model vs Price"
     )
-    st.plotly_chart(bar_fig)
+    scatter2_fig.update_layout(
+        axis={'categoryorder':'category ascending'}
+    )
+    scatter2_fig.update_xaxes(tickangle=45)
+
+    st.plotly_chart(scatter2_fig)

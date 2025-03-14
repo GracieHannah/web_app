@@ -40,3 +40,17 @@ if show_scatter:
     st.plotly_chart(scatter_fig)
 
 st.markdown("Adjust the options on the sidebar to explore the data further.")
+
+
+
+st.header('Vehicle manufacturer vs odometer')
+st.write('The relationship between vehicle manufacturer and odometer is shown below.')
+vehicle_df['manufacturer'] = vehicle_df['model'].str[:3]
+fig=px.bar(vehicle_df, x='manufacturer', y='odometer', color='odometer', title='Vehicle manufacturer vs odometer')
+fig.update_layout(yaxis=dict(range=[0,300000]))
+fig.update_layout(
+    plot_bgcolor='white'
+)
+fig.show()
+st.plotly_chart(fig)    
+

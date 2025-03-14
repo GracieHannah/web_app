@@ -82,7 +82,7 @@ if show_scatter2:
         title="Vehicle model vs Price"
     )
     scatter2_fig.update_layout(
-        axis={'categoryorder':'category ascending'}
+        xaxis={'categoryorder':'category ascending'}
     )
     scatter2_fig.update_xaxis(tickangle=45)
 

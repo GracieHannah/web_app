@@ -70,6 +70,8 @@ if show_hist2:
     )
     st.plotly_chart(hist2_fig)
 
+vehicle_df['manufacturer'] = vehicle_df['model'].str[:3]
+
 if show_scatter2:
     st.subheader("Vehicle model year vs price")
     scatter2_fig = px.scatter(

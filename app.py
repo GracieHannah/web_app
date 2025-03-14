@@ -84,6 +84,6 @@ if show_scatter2:
     scatter2_fig.update_layout(
         axis={'categoryorder':'category ascending'}
     )
-    scatter2_fig.update_xaxes(tickangle=45)
+    scatter2_fig.update_xaxis(tickangle=45)
 
     st.plotly_chart(scatter2_fig)
